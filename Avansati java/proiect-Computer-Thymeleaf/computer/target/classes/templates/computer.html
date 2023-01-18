@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Computer Management System</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" th:href="@{/computers}">Computer Management System</a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <h1>List Computers</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a th:href="@{/computers/new}" class="btn btn-primary btn-sm mb-3">Add Computer</a>
+        </div>
+        <div class="col-8">
+            <form class="row g-3" th:action="@{/computer/show/{id}(id=${computer.id})}" th:object="${computer}" method="get">
+                <div class="col-auto">
+                    <input type="number" th:field="*{id}" class="form-control" placeholder="Enter product ID">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table table-stripped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Computer ID</th>
+            <th>Product Code</th>
+            <th>Type</th>
+            <th>Processor</th>
+            <th>Memory</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="computer: ${computers}">
+            <td th:text="${computer.id}" class="text-center"></td>
+            <td th:text="${computer.productCode}"></td>
+            <td th:text="${computer.type}"></td>
+            <td th:text="${computer.processor}"></td>
+            <td th:text="${computer.memory}"></td>
+            <td>
+                <a th:href="@{/computers/edit/{id}(id=${computer.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/computers/{id}(id=${computer.id})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
