@@ -1,9 +1,11 @@
 package proiect.computer;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,8 +17,20 @@ public class ComputerController {
     }
 
     @GetMapping("/computers")
-    public String listComputers(Model model) {
-        model.addAttribute("computers", computerService.getAllComputers());
+    public String listComputers(Model model, @Param("id") Long id) {
+        try{
+            if(id==null){
+                model.addAttribute("computers", computerService.getAllComputers());
+            }else if(computerService.existsComputer(id)){
+                model.addAttribute("computers", computerService.getAComputer(id));
+
+            }
+        }catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+
+
+            model.addAttribute("computers", computerService.getAllComputers());
+        }
         return "computers";
     }
     @GetMapping("/computers/new")
@@ -28,7 +42,7 @@ public class ComputerController {
     }
 
     @PostMapping("/computers")
-    public String saveComputer(@ModelAttribute("student") Computer computer){
+    public String saveComputer(@ModelAttribute("computer") Computer computer){
         computerService.addComputer(computer);
         return "redirect:/computers";
     }
@@ -52,10 +66,5 @@ public class ComputerController {
     public String deleteStudent(@PathVariable Long id){
         computerService.deleteComputer(id);
         return "redirect:/computers";
-    }
-    @GetMapping("/computers/show/{id}")
-    public String listAComputer(@PathVariable Long id){
-        computerService.getAComputer(id);
-        return"computer";
     }
 }

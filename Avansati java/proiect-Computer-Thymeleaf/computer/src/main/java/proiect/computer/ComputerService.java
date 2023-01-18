@@ -22,6 +22,11 @@ public class ComputerService implements IComputerService {
     public List<Computer> getAllComputers(){
         return computerRepository.findAll();
     }
+
+    @Override
+    public boolean existsComputer(Long id){
+        return computerRepository.existsById(id);
+    }
     @Override
     public Computer getAComputer(Long id){
         return computerRepository.findById(id)
@@ -33,7 +38,6 @@ public class ComputerService implements IComputerService {
     }
     @Override
     public Computer updateComputer(Computer newComputer, Long id){
-        productCodeValidator(newComputer.getProductCode());
         return computerRepository.findById(id)
                 .map(computer -> {
                     computer.setProductCode(newComputer.getProductCode());
